@@ -29,7 +29,7 @@
     },
 "dependencies":
     {
-    "simpleClan": false,
+    "simpleClan": true,
     "authme": true,
     "luckperms": true
     },
