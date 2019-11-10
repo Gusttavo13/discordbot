@@ -1,0 +1,41 @@
+{
+
+"cfg":
+    {
+    "token": "NjQzMTM0NDA0NDY1Nzg2ODg4.XchFbA.LkCYcXK4ZO53vlpC3nPzjnPQgmI",
+    "prefix": "/",
+    "setGame": "Thornya.pvp.host",
+    "command": "perfil"
+    },
+"embed":
+    {
+    "color": "9043712",
+    "title": "📃Informações do Jogador📃",
+    "subTitle": "Nick:",
+    "footer": "Thornya Perfil",
+    "money": "💰Dinheiro",
+    "xp": "❇️XP",
+    "group": "📟Cargo",
+    "clan": "🚩Clan",
+    "emojiOn": "<:online:627310984192589840>",
+    "emojiOff": "<:DoNotDisturbDOT:627311021924548619>"
+    },
+"database":
+    {
+    "host": "144.217.49.253",
+    "user": "rh9442",
+    "password": "0cfc2803cc",
+    "database": "rh9442"
+    },
+"dependencies":
+    {
+    "simpleClan": false,
+    "authme": true,
+    "luckperms": true
+    },
+"messages":
+    {
+    "noexists": "This player does not exist!",
+    "nohaveclan": "None"
+    }
+}
