@@ -35,7 +35,7 @@
     },
 "messages":
     {
-    "noexists": "This player does not exist!",
-    "nohaveclan": "None"
+    "noexists": "Esse player não existe!",
+    "nohaveclan": "Sem clan"
     }
 }
