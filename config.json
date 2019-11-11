@@ -14,9 +14,10 @@
     "subTitle": "Nick:",
     "footer": "Thornya Perfil",
     "money": "💰Dinheiro",
-    "xp": "❇️XP",
+    "xp": ":eight_spoked_asterisk: XP",
     "group": "📟Cargo",
     "clan": "🚩Clan",
+    "jobs": ":tools: Jobs",
     "emojiOn": "<:online:627310984192589840>",
     "emojiOff": "<:DoNotDisturbDOT:627311021924548619>"
     },
@@ -31,11 +32,13 @@
     {
     "simpleClan": true,
     "authme": true,
-    "luckperms": true
+    "luckperms": true,
+    "jobs": true
     },
 "messages":
     {
     "noexists": "Esse player não existe!",
-    "nohaveclan": "Sem clan"
+    "nohaveclan": "Sem clan",
+    "emprego": "Desempregado"
     }
 }
