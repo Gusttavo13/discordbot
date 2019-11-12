@@ -13,6 +13,7 @@
   "dependencies": {
     "config-yml": "^0.10.3",
     "discord.js": "^11.5.1",
+    "fs": "0.0.1-security",
     "js-yaml": "^3.13.1",
     "minecraft-api": "0.0.2",
     "mysql": "^2.17.1"

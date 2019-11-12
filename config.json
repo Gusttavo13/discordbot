@@ -40,5 +40,13 @@
     "noexists": "Esse player não existe!",
     "nohaveclan": "Sem clan",
     "emprego": "Desempregado"
+    },
+    "aviso":
+    {
+    "canaldeaviso": "615339254628745217",
+    "logdeaviso": "615339254628745217",
+    "textatt": "Atualizações",
+    "textinfo": "Informações",
+    "textgrave": "Grave"
     }
 }

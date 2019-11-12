@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const mysql = require("mysql");
 const client = new Discord.Client();
+client.commands = new Discord.Collection();
 const config = require('./config.json')
 //MySQL//
 
@@ -127,7 +128,7 @@ client.on("message", async message => {
                         "fields": [
                           {
                             "name": `${config.embed.money}`,
-                            "value": `R$${resultmoney[0].money}`
+                            "value": `T$${resultmoney[0].money}`
                           },
                           {
                             "name": `${config.embed.xp}`,
@@ -168,7 +169,7 @@ client.on("message", async message => {
                         "fields": [
                           {
                             "name": `${config.embed.money}`,
-                            "value": `R$${resultmoney[0].money}`
+                            "value": `T$${resultmoney[0].money}`
                           },
                           {
                             "name": `${config.embed.xp}`,
@@ -199,12 +200,207 @@ client.on("message", async message => {
       });
       } else {
         return message.channel.send(config.messages.noexists);
-          };              
+          };
+          connection.release();              
+        });
+
+      });
+
+    };
+    //Comando Ping
+  if (comando === "ping") {
+    const m = await message.channel.send("Pong!");
+    m.edit(`A Latência é ${m.createdTimestamp - message.createdTimestamp}ms. A Latência da API é ${Math.round(client.ping)}ms`);
+  }
+  //Comando de Mostrar quem fez o BOT
+  if (comando === "bot") {
+    const embedBot = {
+      "title": "Informações do BOT",
+      "color": 10197915,
+      "footer": {
+        "text": "Programador do BOT"
+      },
+      "thumbnail": {
+        "url": "https://minotar.net/helm/Gusttavo13/100.png"
+      },
+      "author": {
+        "name": "📃Criador do BOT📃"
+      },
+      "fields": [
+        {
+          "name": "📃Nick",
+          "value": `Gusttavo13`
+        },
+        {
+          "name": "📃Nick no Discord",
+          "value": "Gusttavo13#0123"
+        },
+        {
+          "name": "📃Criado em",
+          "value": "27/07/2019"
+        }
+        ,
+        {
+          "name": "📃Linguagens usadas",
+          "value": "Javascript, MySQL e Java"
+        }
+      ]
+    };
+    message.channel.send({ embed: embedBot });
+  }
+  ///////////////AVISO///////////
+  if (comando === "aviso") {
+    const embedAvisoHelp = {
+      "title": `Tipos de Aviso`,
+      "color": 65535,
+      "footer": {
+        "text": "Informações do Aviso"
+      },
+      "author": {
+        "name": "📃Aviso do Thornya📃"
+      },
+      "fields": [
+        {
+          "name": "Atualizações :page_with_curl: ",
+          "value": "1"
+        },
+        {
+          "name": "Informação :warning:",
+          "value": "2"
+        },
+        {
+          "name": "Grave :no_entry:",
+          "value": "3"
+        },
+        {
+          "name": "Como usar",
+          "value": `${config.cfg.prefix}aviso 1 texto`
+        }
+      ]
+    };
+
+    ///615330098949652480
+    const canal = client.channels.get(config.aviso.canaldeaviso)
+    const canalbotcomandosstaff = client.channels.get(config.aviso.logdeaviso)
+    var emojiaviso = ":page_with_curl:"
+    var coraviso = "4886754"
+    //Check tipo do aviso
+    if (args[0] === "1"){
+      emojiaviso = ":page_with_curl:"
+      coraviso = "4886754"
+      nomedoaviso = config.aviso.textatt
+    }
+    else if(args[0] === "2"){
+      emojiaviso = ":warning:"
+      coraviso = "16312092"
+      nomedoaviso = config.aviso.textinfo
+    }
+    else if(args[0] === "3"){
+      emojiaviso = ":no_entry:"
+      coraviso = "16712965"
+      nomedoaviso = config.aviso.textgrave
+    }
+    //
+    let splitargs = args.slice(1).join(" ")
+    var args = splitargs;
+    if (!args.length) return canalbotcomandosstaff.send({ embed: embedAvisoHelp }); {
+    }
+    const embedAviso = {
+      "title": `${nomedoaviso} ${emojiaviso}`,
+      "color": `${coraviso}`,
+      "footer": {
+        "icon_url": `${message.author.avatarURL}`,
+        "text": `Aviso enviado por ${message.author.username}`
+      },
+      "author": {
+        "name": "📃Aviso do Thornya📃"
+      },
+      "fields": [
+        {
+          "name": "Mensagem",
+          "value": `${args}`
+        }
+      ]
+    };
+    canal.send({ embed: embedAviso });
+    message.channel.send("Aviso enviado com Sucesso!");
+  }
+  ///////////////////////////////////////////////////////////////////////////////////
+
+
+
+  ////////////////Baltop
+
+  if (comando === "baltop") {
+    if (args.length | args.length > 0) return message.channel.send(`Use: ${config.cfg.prefix}Baltop`); {
+      pool.getConnection(function(err, connection){
+      connection.query("SELECT money, player_name FROM mpdb_economy ORDER BY money DESC LIMIT 10", function (err, ecocheck, fields) {
+        if(!ecocheck[0].money < 10){
+
+      const embedbaltop = {
+        "color": "5301186",
+        "footer": {
+        },
+        "author": {
+          "name": "💸 Rank Money 💸"
+        },
+        "fields": [
+          {
+            "name": `[1] ${ecocheck[0].player_name}`,
+            "value": `T$${ecocheck[0].money}`
+          },
+          {
+            "name": `[2] ${ecocheck[1].player_name}`,
+            "value": `T$${ecocheck[1].money}`
+          },
+          {
+            "name": `[3] ${ecocheck[2].player_name}`,
+            "value": `T$${ecocheck[2].money}`
+          },
+          {
+            "name": `[4] ${ecocheck[3].player_name}`,
+            "value": `T$${ecocheck[3].money}`
+          },
+          {
+            "name": `[5] ${ecocheck[4].player_name}`,
+            "value": `T$${ecocheck[4].money}`
+          },
+          {
+            "name": `[6] ${ecocheck[5].player_name}`,
+            "value": `T$${ecocheck[5].money}`
+          },
+          {
+            "name": `[7] ${ecocheck[6].player_name}`,
+            "value": `T$${ecocheck[6].money}`
+          },
+          {
+            "name": `[8] ${ecocheck[7].player_name}`,
+            "value": `T$${ecocheck[7].money}`
+          },
+          {
+            "name": `[9] ${ecocheck[8].player_name}`,
+            "value": `T$${ecocheck[8].money}`
+          },
+          {
+            "name": `[10] ${ecocheck[9].player_name}`,
+            "value": `T$${ecocheck[9].money}`
+          }
+          
+
+
+        ]
+      };
+      message.channel.send({ embed: embedbaltop });
+      }else{
+        message.channel.send("Baltop em Manutenção!");
+          }
         });
         connection.release();
       });
-    };    
-  });
+      
+    }
+  }
+});
 module.exports = pool
 client.login(config.cfg.token);
 //
