@@ -54,7 +54,7 @@ client.on("message", async message => {
   var comando = args.shift().toLowerCase();
   
   //Command Perfil
-  if (comando === `${config.cfg.command}`) {
+  if (comando === `${config.cfg.command}` || comando === "pf" || comando === "p") {
     if (!args.length | args.length > 1) return message.channel.send(`Use: ${config.cfg.prefix}${config.cfg.command} Player`); {
     } 
     pool.getConnection(function(err, connection){
@@ -145,6 +145,10 @@ client.on("message", async message => {
                           {
                             "name": `${config.embed.jobs}`,
                             "value": `${resultjobs}`
+                          },
+                          {
+                            "name": "Vinculado",
+                            "value": "None"
                           }
                         ]
                       };
@@ -186,7 +190,12 @@ client.on("message", async message => {
                           {
                             "name": `${config.embed.jobs}`,
                             "value": `${resultjobs}`
+                          },
+                          {
+                            "name": "Vinculado",
+                            "value": "None"
                           }
+                          
                         ]
                       };
                       message.channel.send({ embed: embedPlayer });
@@ -249,7 +258,7 @@ client.on("message", async message => {
     message.channel.send({ embed: embedBot });
   }
   ///////////////AVISO///////////
-  if (comando === "aviso") {
+  if (comando === "aviso" || comando === "av"){
     const embedAvisoHelp = {
       "title": `Tipos de Aviso`,
       "color": 65535,
@@ -303,8 +312,7 @@ client.on("message", async message => {
     //
     let splitargs = args.slice(1).join(" ")
     var args = splitargs;
-    if (!args.length) return canalbotcomandosstaff.send({ embed: embedAvisoHelp }); {
-    }
+    if (!args.length) return canalbotcomandosstaff.send({ embed: embedAvisoHelp });   
     const embedAviso = {
       "title": `${nomedoaviso} ${emojiaviso}`,
       "color": `${coraviso}`,
@@ -332,7 +340,7 @@ client.on("message", async message => {
   ////////////////Baltop
 
   if (comando === "baltop") {
-    if (args.length | args.length > 0) return message.channel.send(`Use: ${config.cfg.prefix}Baltop`); {
+    if (args.length || args.length > 0) return message.channel.send(`Use: ${config.cfg.prefix}Baltop`); {
       pool.getConnection(function(err, connection){
       connection.query("SELECT money, player_name FROM mpdb_economy ORDER BY money DESC LIMIT 10", function (err, ecocheck, fields) {
         if(!ecocheck[0].money < 10){
@@ -396,10 +404,37 @@ client.on("message", async message => {
           }
         });
         connection.release();
-      });
-      
+      });  
     }
   }
+     ///////////////Verificar///////////
+     if (comando === "vincular" || comando === "v"){
+      const embedverificar = {
+        "title": `Database não encontrada❌`,
+        "color": 65535,
+        "footer": {
+          "text": "Verificar perfil"
+        },
+        "author": {
+          "name": "Banco de Dados"
+        },
+        "fields": [
+          {
+            "name": "Comando no Discord",
+            "value": "`Use /vincular [Código]`"
+          },
+          {
+            "name": "Comando no Servidor",
+            "value": "`Use /vincular`"
+          }
+        ]
+      };
+      if (args.length > 1 || args.length < 1) return message.channel.send({ embed: embedverificar });
+
+      if (args.length == 1){
+        message.channel.send("Código Inválido ❌");
+      }
+    }  
 });
 module.exports = pool
 client.login(config.cfg.token);
