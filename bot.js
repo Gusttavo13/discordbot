@@ -69,7 +69,19 @@ client.on("message", async message => {
           const cargoT = cargo.charAt(0).toUpperCase() + cargo.slice(1);
           const username = resultnick[0].username
           //User Logged or no
-          connection.query(`SELECT username, realname, isLogged FROM authme WHERE username='${username}'`, function (errplayerclan, resultlogged, fieldsplayerclan) {
+          connection.query(`SELECT username, realname, isLogged, lastlogin FROM authme WHERE username='${username}'`, function (errplayerclan, resultlogged, fieldsplayerclan) {
+
+            /////Pega o Último dia do player no Servidor////////////////////////////////////////////////
+            var data = new Date()
+            var dayatual = data.getTime()
+            var mili = (1*24*60*60*1000)
+            var lastday = resultlogged[0].lastlogin
+            lastday = dayatual - resultlogged[0].lastlogin
+            var conversion = Math.abs(lastday / mili)
+            var conversion1 = Math.ceil(conversion)
+            resultday = data.setDate(data.getDate() - conversion1)
+            var dayembedlast = data.getDate() + "/" + (data.getMonth() + 1) + "/" + data.getFullYear()
+            ////////////////////////////////////////////////////////////////////////////////////////////
           connection.query(`SELECT COUNT(*)name, tag FROM sc_players WHERE name='${resultlogged[0].realname}'`, function (err, checarclan, fields) {
             if (err) throw err;
             //Money
@@ -147,7 +159,11 @@ client.on("message", async message => {
                             "value": `${resultjobs}`
                           },
                           {
-                            "name": "Vinculado",
+                            "name": `${config.embed.lastday}`,
+                            "value": `${dayembedlast}`
+                          },
+                          {
+                            "name": `${config.embed.vinculado}`,
                             "value": "None"
                           }
                         ]
@@ -192,7 +208,11 @@ client.on("message", async message => {
                             "value": `${resultjobs}`
                           },
                           {
-                            "name": "Vinculado",
+                            "name": `${config.embed.lastday}`,
+                            "value": `${dayembedlast}`
+                          },
+                          {
+                            "name": `${config.embed.vinculado}`,
                             "value": "None"
                           }
                           
