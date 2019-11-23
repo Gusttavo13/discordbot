@@ -457,6 +457,48 @@ client.on("message", async message => {
       });  
     }
   }
+    ////////////////////////////////////////////////////////////////////
+    if (comando === "onlines" || comando === "players" || comando === "online") {
+      if (args.length || args.length > 0) return message.channel.send(`Use: ${config.cfg.prefix}onlines`); {
+        pool.getConnection(function(err, connection){
+          connection.query(`SELECT COUNT(*)isLogged, realname FROM authme  WHERE isLogged='1' LIMIT 20`, function (err, countonlines, fields) {
+            connection.query(`SELECT isLogged, realname FROM authme  WHERE isLogged='1' LIMIT 20`, function (err, resultadoonlines, fields) {
+
+            var numerosdejogadores = countonlines[0].isLogged
+            var totaldejogadoreson = ""
+            if (numerosdejogadores == 0){
+              totaldejogadoreson = "Sem jogadores onlines"
+            }
+            if (numerosdejogadores > 0){
+
+              for(var i = 0;i < numerosdejogadores; i++){
+                var numerofixo = i + 1
+                totaldejogadoreson += `[${numerofixo}] ` + resultadoonlines[i].realname + ` ${config.embed.emojiOn}` + "\n"           
+              }
+
+            }
+            //SELECT isLogged, realname FROM authme ORDER BY isLogged DESC LIMIT 20
+        const embedonlines = {
+          "color": "5301186",
+          "footer": {
+          },
+          "author": {
+            "name": "🌐 Jogadores Onlines 🌐"
+          },
+          "fields": [
+            {
+              "name": `${config.embed.onlines}`,
+              "value": `${totaldejogadoreson}`
+            }           
+            ]
+          };
+        message.channel.send({ embed: embedonlines });          
+        });
+      });
+          connection.release();
+        });  
+      }
+    }
      ///////////////Verificar///////////
      if (comando === "vincular" || comando === "v"){
       const embedverificar = {
