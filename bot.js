@@ -108,7 +108,6 @@ client.on("message", async message => {
                   
                         connection.query(`SELECT COUNT(*)username FROM jobs_users WHERE username='${realnome}'`, function (err, countjobsuser, fields) {
                           var resultjobs = config.messages.emprego
-                          if (countjobsuser[0].username > 0 ){
                             connection.query(`SELECT id, username FROM jobs_users WHERE username='${realnome}'`, function (errplayerclan, resultidjob, fieldsplayerclan) {
                               var jobid = resultidjob[0].id
                             connection.query(`SELECT userid, job, level FROM jobs_jobs WHERE userid='${jobid}'`, function (errplayerclan, resultjobsbase, fieldsplayerclan) {
@@ -124,7 +123,78 @@ client.on("message", async message => {
                             if (jobscontados == 3 ){
                               resultjobs = `${resultjobsbase[0].job} [${resultjobsbase[0].level}] - ${resultjobsbase[1].job} [${resultjobsbase[1].level}] - ${resultjobsbase[2].job} [${resultjobsbase[2].level}]`
                           }
-                        
+                          connection.query(`SELECT player_name, food FROM mpdb_health_food_air WHERE player_name='${realnome}'`, function (errmpdb, resultmpdbfood, fieldsplayermpdbfood) {
+
+                            var valuefood = resultmpdbfood[0].food
+                            var comidacheia = config.embed.emojicomidacheia
+                            var meiacomida = config.embed.emojicomidameia
+                            var comidavazia = config.embed.emojicomidavazia
+                            var resultadocomida = (comidavazia + comidavazia
+                              + comidavazia + comidavazia + comidavazia + comidavazia
+                              + comidavazia + comidavazia + comidavazia + comidavazia)  
+
+                              
+
+                              if(valuefood == 1){
+                                resultadocomida = meiacomida+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia
+                              }
+                              if(valuefood == 2){
+                                resultadocomida = comidacheia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia
+                              }
+                              if(valuefood == 3){
+                                resultadocomida = comidacheia+meiacomida+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia
+                              }
+                              if(valuefood == 4){
+                                resultadocomida = comidacheia+comidacheia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia
+                              }
+                              if(valuefood == 5){
+                                resultadocomida = comidacheia+comidacheia+meiacomida+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia 
+                              }
+                              if(valuefood == 6){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia 
+                              }
+                              if(valuefood == 7){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+meiacomida+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia
+                              }
+                              if(valuefood == 8){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia
+                              }
+                              if(valuefood == 9){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+meiacomida+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia
+                              }
+                              if(valuefood == 10){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidavazia+comidavazia+comidavazia+comidavazia+comidavazia
+                              }
+                              if(valuefood == 11){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+meiacomida+comidavazia+comidavazia+comidavazia+comidavazia
+                              }
+                              if(valuefood == 12){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidavazia+comidavazia+comidavazia+comidavazia
+                              }
+                              if(valuefood == 13){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+meiacomida+comidavazia+comidavazia+comidavazia
+                              }
+                              if(valuefood == 14){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidavazia+comidavazia+comidavazia
+                              }
+                              if(valuefood == 15){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+meiacomida+comidavazia+comidavazia
+                              }
+                              if(valuefood == 16){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidavazia+comidavazia
+                              }
+                              if(valuefood == 17){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+meiacomida+comidavazia
+                              }
+                              if(valuefood == 18){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidavazia
+                              }
+                              if(valuefood == 19){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+meiacomida
+                              }
+                              if(valuefood == 20){
+                                resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia
+                              }              
                       const embedPlayer = {
                         "title": `${config.embed.subTitle} ${resultlogged[0].realname} ${logged}`,
                         "color": config.embed.color,
@@ -163,63 +233,19 @@ client.on("message", async message => {
                             "value": `${dayembedlast}`
                           },
                           {
+                            "name": `${config.embed.fome}`,
+                            "value": `${resultadocomida}`
+                          },
+                          {
                             "name": `${config.embed.vinculado}`,
                             "value": "None"
                           }
                         ]
                       };
                       message.channel.send({ embed: embedPlayer });
-                    
-                          });
-                        });         
-                      });
-                    }else{
-                      const embedPlayer = {
-                        "title": `${config.embed.subTitle} ${resultlogged[0].realname} ${logged}`,
-                        "color": config.embed.color,
-                        "footer": {
-                          "text": `${config.embed.footer}`
-                        },
-                        "thumbnail": {
-                          "url": `https://minotar.net/helm/${resultlogged[0].realname}/100.png`
-                        },
-                        "author": {
-                          "name": `${config.embed.title}`
-                        },
-                        "fields": [
-                          {
-                            "name": `${config.embed.money}`,
-                            "value": `T$${resultmoney[0].money}`
-                          },
-                          {
-                            "name": `${config.embed.xp}`,
-                            "value": `${resultxp[0].exp_lvl}`
-                          },
-                          {
-                            "name": `${config.embed.group}`,
-                            "value": `${cargoT}`
-                          },
-                          {
-                            "name": `${config.embed.clan}`,
-                            "value": `${strup}`
-                          },
-                          {
-                            "name": `${config.embed.jobs}`,
-                            "value": `${resultjobs}`
-                          },
-                          {
-                            "name": `${config.embed.lastday}`,
-                            "value": `${dayembedlast}`
-                          },
-                          {
-                            "name": `${config.embed.vinculado}`,
-                            "value": "None"
-                          }
-                          
-                        ]
-                      };
-                      message.channel.send({ embed: embedPlayer });
-                    }
+                        });
+                      });         
+                    });
                   });
                 });
               });
@@ -227,6 +253,7 @@ client.on("message", async message => {
           });
         });
       });
+    })
       } else {
         return message.channel.send(config.messages.noexists);
           };
@@ -279,6 +306,9 @@ client.on("message", async message => {
   }
   ///////////////AVISO///////////
   if (comando === "aviso" || comando === "av"){
+    if(!message.member.hasPermission('ADMINISTRATOR')){
+      return message.channel.sendMessage(":no_entry: Você não tem permissão para executar esse comando :no_entry:")
+    }
     const embedAvisoHelp = {
       "title": `Tipos de Aviso`,
       "color": 65535,

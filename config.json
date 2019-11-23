@@ -20,8 +20,12 @@
     "jobs": ":tools: Jobs",
     "emojiOn": "<:online:627310984192589840>",
     "emojiOff": "<:DoNotDisturbDOT:627311021924548619>",
+    "emojicomidacheia": "<:pernilinteiro:647252950850469912>",
+    "emojicomidameia": "<:meiopernil:647252931225190400>",
+    "emojicomidavazia": "<:pernilvazio:647523430547324929>",
     "vinculado": "Vinculado",
-    "lastday": "Visto por Último"
+    "lastday": "Última vez online",
+    "fome": "Fome"
     },
 "database":
     {
@@ -45,7 +49,7 @@
     },
     "aviso":
     {
-    "canaldeaviso": "615339254628745217",
+    "canaldeaviso": "625907727520104449",
     "logdeaviso": "615339254628745217",
     "textatt": "Atualizações",
     "textinfo": "Informações",
