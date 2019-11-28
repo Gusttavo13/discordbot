@@ -12,7 +12,6 @@ const pool = mysql.createPool({
   password: config.database.password,
   database: config.database.database
 });
-
 //pool.getConnection((err, connection) => {
   //if (err) {
     //  if (err.code === 'PROTOCOL_CONNECTION_LOST') {
@@ -31,7 +30,22 @@ const pool = mysql.createPool({
 
 client.on("ready", () => {
   console.log(`Online, with ${client.users.size} Users, em ${client.channels.size} channels, in ${client.guilds.size} servers!`);
-  client.user.setGame(config.cfg.setGame);
+  client.user.setActivity(config.cfg.setGame);
+
+  const embedboton = {
+    "color": 65535,
+    "author": {
+      "name": "📃Bot Online📃"
+    },
+    "fields": [
+      {
+        "name": "Status do BOT",
+        "value": "Online"
+      }
+    ]
+  };
+  const logboton = client.channels.get(config.cfg.logbot)
+  logboton.send({ embed: embedboton });
 });
 
 client.on("guildCreate", guild => {
@@ -502,7 +516,6 @@ client.on("message", async message => {
      ///////////////Verificar///////////
      if (comando === "vincular" || comando === "v"){
       const embedverificar = {
-        "title": `Database não encontrada❌`,
         "color": 65535,
         "footer": {
           "text": "Verificar perfil"
@@ -512,21 +525,49 @@ client.on("message", async message => {
         },
         "fields": [
           {
-            "name": "Comando no Discord",
+            "name": "Comando no Servidor",
             "value": "`Use /vincular [Código]`"
           },
           {
-            "name": "Comando no Servidor",
+            "name": "Comando no Discord",
             "value": "`Use /vincular`"
           }
         ]
       };
-      if (args.length > 1 || args.length < 1) return message.channel.send({ embed: embedverificar });
+      if (args.length > 0) return message.channel.send({ embed: embedverificar });
+      pool.getConnection(function(err, connection){
+        connection.query(`SELECT COUNT(userID)userID FROM thornya_vinculo WHERE userID='${message.member.user.tag}' LIMIT 20`, function (err, resultlinked, fields) {
+          if(resultlinked[0].userID == 0){
+            function makecode(length) {
+              var result = '';
+              var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+              var charactersLength = characters.length;
+              for ( var i = 0; i < length; i++ ) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+              }
+              return result;
+            }
+            var codeverification = makecode(15)
+            ///////////////////////
+            connection.query(`INSERT INTO thornya_vinculo(id, username, userID, code, linked) VALUES (NULL, '','${message.member.user.tag}',"${codeverification}",'0')`, function (err, attlinked, fields) {
+              message.channel.send("🔰Seu código foi enviado no seu Privado🔰")
+              message.author.send(`Seu **novo** código de verificação para o Servidor do **Thornya Club**\nCódigo: ${codeverification}\n\nUtilize o comando **/vincular [código]** dentro do Servidor\n**Exemplo: /vincular 12345**`)
 
-      if (args.length == 1){
-        message.channel.send("Código Inválido ❌");
-      }
-    }  
+            }); 
+          }else if(resultlinked[0].userID == 1){
+            connection.query(`SELECT userID, code FROM thornya_vinculo WHERE userID='${message.member.user.tag}' LIMIT 20`, function (err, resultlinked, fields) {
+            var usedcodeverification = resultlinked[0].code
+            message.channel.send(`Você já tem um Código\nVeja seu Privado!`)
+            message.author.send(`Seu código de verificação para o Servidor do **Thornya Club**\nCódigo: ${usedcodeverification}\n\nUtilize o comando **/vincular [código]** dentro do Servidor\n**Exemplo: /vincular 12345**`)
+            });
+
+          }else{
+            message.channel.send("⛔Ocorreu um Erro⛔\nChame um Administrador\nErro #013")
+          }
+        });
+        connection.release();     
+      });    
+    }
 });
 module.exports = pool
 client.login(config.cfg.token);

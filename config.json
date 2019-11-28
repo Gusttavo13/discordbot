@@ -4,8 +4,9 @@
     {
     "token": "NjQzMTM0NDA0NDY1Nzg2ODg4.XchFbA.LkCYcXK4ZO53vlpC3nPzjnPQgmI",
     "prefix": "/",
-    "setGame": "Thornya.pvp.host",
-    "command": "perfil"
+    "setGame": "Play.Thornya.Club",
+    "command": "perfil",
+    "logbot": "615339254628745217"
     },
 "embed":
     {
@@ -30,10 +31,10 @@
     },
 "database":
     {
-    "host": "144.217.49.253",
-    "user": "rh9442",
-    "password": "0cfc2803cc",
-    "database": "rh9442"
+    "host": "149.56.134.194",
+    "user": "sh_db777",
+    "password": "a63dee0e25",
+    "database": "sh_db777"
     },
 "dependencies":
     {
@@ -48,7 +49,7 @@
     "nohaveclan": "Sem clan",
     "emprego": "Desempregado"
     },
-    "aviso":
+"aviso":
     {
     "canaldeaviso": "625907727520104449",
     "logdeaviso": "615339254628745217",
