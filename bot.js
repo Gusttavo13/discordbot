@@ -72,18 +72,18 @@ client.on("message", async message => {
     if (!args.length | args.length > 1) return message.channel.send(`Use: ${config.cfg.prefix}${config.cfg.command} Player`); {
     } 
     pool.getConnection(function(err, connection){
-    connection.query(`SELECT COUNT(*)username, Uuid FROM luckperms_players WHERE username='${args}'`, function (err, checarnabase, fields) {
+    connection.query(`SELECT COUNT(*)username, uuid FROM luckperms_players WHERE username='${args}' GROUP BY username, uuid`, function (err, checarnabase, fields) {
         if (err) throw err;
       //Check nick in db
       if (checarnabase[0].username > 0) {
-        connection.query(`SELECT username, uuid, primary_group FROM luckperms_players WHERE username='${args}'`, function (err, resultnick, fields) {
+        connection.query(`SELECT username, uuid, primary_group FROM luckperms_players WHERE username='${args}' GROUP BY username, uuid, primary_group`, function (err, resultnick, fields) {
 
           //Converts First Letter from Title to Uppercase
           const cargo = resultnick[0].primary_group
           const cargoT = cargo.charAt(0).toUpperCase() + cargo.slice(1);
           const username = resultnick[0].username
           //User Logged or no
-          connection.query(`SELECT username, realname, isLogged, lastlogin FROM authme WHERE username='${username}'`, function (errplayerclan, resultlogged, fieldsplayerclan) {
+          connection.query(`SELECT username, realname, isLogged, lastlogin FROM authme WHERE username='${username}' GROUP BY username, realname, isLogged, lastlogin`, function (errplayerclan, resultlogged, fieldsplayerclan) {
 
             /////Pega o Último dia do player no Servidor////////////////////////////////////////////////
             var data = new Date()
@@ -96,16 +96,16 @@ client.on("message", async message => {
             resultday = data.setDate(data.getDate() - conversion1)
             var dayembedlast = data.getDate() + "/" + (data.getMonth() + 1) + "/" + data.getFullYear()
             ////////////////////////////////////////////////////////////////////////////////////////////
-          connection.query(`SELECT COUNT(*)name, tag FROM sc_players WHERE name='${resultlogged[0].realname}'`, function (err, checarclan, fields) {
+          connection.query(`SELECT COUNT(*)name, tag FROM sc_players WHERE name='${resultlogged[0].realname}' GROUP BY name, tag`, function (err, checarclan, fields) {
             if (err) throw err;
             //Money
-            connection.query(`SELECT money, player_name FROM mpdb_economy WHERE player_name='${username}'`, function (errmoney, resultmoney, fieldsmoney) {
+            connection.query(`SELECT money, player_name FROM mpdb_economy WHERE player_name='${username}' GROUP BY money, player_name`, function (errmoney, resultmoney, fieldsmoney) {
               if (errmoney) throw errmoney;
               //Total XP 
-              connection.query(`SELECT exp_lvl, player_name FROM mpdb_experience WHERE player_name='${username}'`, function (errxp, resultxp, fieldsxp) {
+              connection.query(`SELECT exp_lvl, player_name FROM mpdb_experience WHERE player_name='${username}' GROUP BY exp_lvl, player_name`, function (errxp, resultxp, fieldsxp) {
                 if (err) throw err;
                 //Clan
-                connection.query(`SELECT name, tag FROM sc_players WHERE name='${resultlogged[0].realname}'`, function (errplayerclan, resultplayerclan, fieldsplayerclan) {
+                connection.query(`SELECT name, tag FROM sc_players WHERE name='${resultlogged[0].realname}' GROUP BY name, tag`, function (errplayerclan, resultplayerclan, fieldsplayerclan) {
                   if (err) throw err;
                   var strup = config.messages.nohaveclan;
                   if (checarclan[0].name > 0) {
@@ -120,9 +120,9 @@ client.on("message", async message => {
                       logged = config.embed.emojiOn
                     }
                   
-                        connection.query(`SELECT COUNT(*)username FROM jobs_users WHERE username='${realnome}'`, function (err, countjobsuser, fields) {
+                        connection.query(`SELECT COUNT(*)username FROM jobs_users WHERE username='${realnome}' GROUP BY`, function (err, countjobsuser, fields) {
                           var resultjobs = config.messages.emprego
-                            connection.query(`SELECT id, username FROM jobs_users WHERE username='${realnome}'`, function (errplayerclan, resultidjob, fieldsplayerclan) {
+                            connection.query(`SELECT id, username FROM jobs_users WHERE username='${realnome}' GROUP BY id, username`, function (errplayerclan, resultidjob, fieldsplayerclan) {
                               var jobid = resultidjob[0].id
                             connection.query(`SELECT userid, job, level FROM jobs_jobs WHERE userid='${jobid}'`, function (errplayerclan, resultjobsbase, fieldsplayerclan) {
                             connection.query(`SELECT COUNT(*)userid FROM jobs_jobs WHERE userid='${jobid}'`, function (err, countjobs, fields) {
@@ -137,7 +137,7 @@ client.on("message", async message => {
                             if (jobscontados == 3 ){
                               resultjobs = `${resultjobsbase[0].job} [${resultjobsbase[0].level}] - ${resultjobsbase[1].job} [${resultjobsbase[1].level}] - ${resultjobsbase[2].job} [${resultjobsbase[2].level}]`
                           }
-                          connection.query(`SELECT player_name, food FROM mpdb_health_food_air WHERE player_name='${realnome}'`, function (errmpdb, resultmpdbfood, fieldsplayermpdbfood) {
+                          connection.query(`SELECT player_name, food FROM mpdb_health_food_air WHERE player_name='${realnome}' GROUP BY player_name, food`, function (errmpdb, resultmpdbfood, fieldsplayermpdbfood) {
 
                             var valuefood = resultmpdbfood[0].food
                             var comidacheia = config.embed.emojicomidacheia
@@ -208,7 +208,17 @@ client.on("message", async message => {
                               }
                               if(valuefood == 20){
                                 resultadocomida = comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia+comidacheia
-                              }              
+                              }
+                              connection.query(`SELECT COUNT(*)username FROM thornya_vinculo WHERE username='${realnome}'`, function (err, countlinked, fields) {  
+                              connection.query(`SELECT username, userID FROM thornya_vinculo WHERE username='${realnome}' GROUP BY userID, username`, function (err, resultvinculo, fields) { 
+                                var vinclinked = "Sem vínculo"
+                                if (countlinked[0].username == 1){
+                                  vinclinked = resultvinculo[0].userID
+                                }
+                                
+
+
+
                       const embedPlayer = {
                         "title": `${config.embed.subTitle} ${resultlogged[0].realname} ${logged}`,
                         "color": config.embed.color,
@@ -252,11 +262,13 @@ client.on("message", async message => {
                           },
                           {
                             "name": `${config.embed.vinculado}`,
-                            "value": "None"
+                            "value": `${vinclinked}`
                           }
                         ]
                       };
                       message.channel.send({ embed: embedPlayer });
+                            });
+                          });
                         });
                       });         
                     });
@@ -540,7 +552,7 @@ client.on("message", async message => {
           if(resultlinked[0].userID == 0){
             function makecode(length) {
               var result = '';
-              var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+              var characters = 'Aa1Bb2Cc3Dd4Ee5Ff6Gg7Hh8Ii9Jj0KkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
               var charactersLength = characters.length;
               for ( var i = 0; i < length; i++ ) {
                 result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -548,6 +560,16 @@ client.on("message", async message => {
               return result;
             }
             var codeverification = makecode(15)
+            veriricarCodeExist()
+            //////////////////////////////
+            function veriricarCodeExist(){
+              connection.query(`SELECT COUNT(code)code FROM thornya_vinculo WHERE code='${codeverification}' LIMIT 20`, function (err, resultcode, fields) {
+                if(resultcode[0].code == 1){
+                  codeverification = makecode(15)
+                  veriricarCodeExist()               
+                  }
+               });
+            }
             ///////////////////////
             connection.query(`INSERT INTO thornya_vinculo(id, username, userID, code, linked) VALUES (NULL, '','${message.member.user.tag}',"${codeverification}",'0')`, function (err, attlinked, fields) {
               message.channel.send("🔰Seu código foi enviado no seu Privado🔰")
@@ -563,9 +585,9 @@ client.on("message", async message => {
 
           }else{
             message.channel.send("⛔Ocorreu um Erro⛔\nChame um Administrador\nErro #013")
-          }
+          }         
         });
-        connection.release();     
+        connection.release();            
       });    
     }
 });
