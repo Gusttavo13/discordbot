@@ -21,6 +21,7 @@ fs.readdir("./comandos/", (err, files) => {
     let props = require(`./comandos/${f}`);
     console.log(`Arquivo ${f} Carregado!`)
     client.commands.set(props.help.name, props)
+    client.commands.set(props.help.aliases, props)
   });
 })
 
@@ -107,7 +108,9 @@ client.on("message", async message => {
   let messageArray = message.content.split(" ");
   let argumentos = messageArray[0];
   let jsCMD = client.commands.get(argumentos.slice(prefix.length));
+
   if(jsCMD) jsCMD.run(client, message, args);
+
 
   var args = message.content.slice(config.cfg.prefix.length).trim().split(/ +/g);
   var comando = args.shift().toLowerCase();
@@ -118,48 +121,7 @@ client.on("message", async message => {
     const m = await message.channel.send("Pong!");
     m.edit(`A Latência é ${m.createdTimestamp - message.createdTimestamp}ms. A Latência da API é ${Math.round(client.ping)}ms`);
   }
-    ////////////////////////////////////////////////////////////////////
-    if (comando === "onlines" || comando === "players" || comando === "online") {
-      if (args.length || args.length > 0) return message.channel.send(`Use: ${config.cfg.prefix}onlines`); {
-        pool.getConnection(function(err, connection){
-          connection.query(`SELECT COUNT(*)isLogged, realname FROM authme  WHERE isLogged='1' LIMIT 20`, function (err, countonlines, fields) {
-            connection.query(`SELECT isLogged, realname FROM authme  WHERE isLogged='1' LIMIT 20`, function (err, resultadoonlines, fields) {
-
-            var numerosdejogadores = countonlines[0].isLogged
-            var totaldejogadoreson = ""
-            if (numerosdejogadores == 0){
-              totaldejogadoreson = "Sem jogadores onlines"
-            }
-            if (numerosdejogadores > 0){
-
-              for(var i = 0;i < numerosdejogadores; i++){
-                var numerofixo = i + 1
-                totaldejogadoreson += `[${numerofixo}] ` + resultadoonlines[i].realname + ` ${config.embed.emojiOn}` + "\n"           
-              }
-
-            }
-        const embedonlines = {
-          "color": "5301186",
-          "footer": {
-          },
-          "author": {
-            "name": "🌐 Jogadores Onlines 🌐"
-          },
-          "fields": [
-            {
-              "name": `${config.embed.onlines}`,
-              "value": `${totaldejogadoreson}`
-            }           
-            ]
-          };
-        message.channel.send({ embed: embedonlines });          
-        });
-      });
-          connection.release();
-        });  
-      }
-    }
-     
+  
 });
 module.exports = pool
 client.login(config.cfg.token);
